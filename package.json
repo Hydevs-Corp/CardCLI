@@ -12,7 +12,10 @@
     "vite": "^5.0.8"
   },
   "dependencies": {
+    "chalk": "^5.3.0",
     "inquirer": "^9.2.12",
-    "nodemon": "^3.0.3"
+    "nodemon": "^3.0.3",
+    "numeric-quantity": "^2.0.1",
+    "table": "^6.8.1"
   }
 }

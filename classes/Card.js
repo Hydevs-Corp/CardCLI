@@ -1,53 +1,97 @@
 class Card {
-    constructor(name, cost, type, force) {
-        this.name = name;
-        this.cost = cost; // Coût en mana
+    level = 1;
+    constructor(cost, type, force) {
+        this.manaCost = cost; // Coût en mana
         this.type = type; // "block", "frappe", "heal"
-        this.force = force; // Valeur de l'effet
+        this.strength = force; // Valeur de l'effet
         this.id = crypto.randomUUID();
     }
 
     use(from, to) {
         switch (this.type) {
             case "block":
-                from.giveArmor(this.force);
+                from.giveArmor(this.strength);
                 break;
             case "frappe":
-                to.takeDamage(this.force);
+                to.takeDamage(this.strength);
                 break;
             case "heal":
-                from.heal(this.force);
+                from.heal(this.strength);
                 break;
         }
+    }
+    upgrade() {
+        this.strength = Math.ceil(this.strength * 1.1);
+        this.level++;
+        this.manaCost += 1;
+    }
+    get name() {
+        if (this.level <= blockCards.length) return blockCards[this.level - 1];
+        return `${this.name}${numericQuantity(this.level, {
+            romanNumerals: true,
+        })}`;
     }
 }
 
 export default Card;
 
-export const createRandomCard = () => {
+export const createRandomCard = (floor = 1) => {
     const types = ["block", "frappe", "heal"];
-    const funkyNames = [
-        "Carte de la mort",
-        "Carte de la vie",
-        "Carte de la joie",
-        "Carte de la tristesse",
-        "Carte de la colère",
-        "Carte de la peur",
-        "Carte de la surprise",
-        "Carte de la honte",
-        "Carte de la fierté",
-        "Carte de la timidité",
-        "Carte de la détermination",
-        "Carte de la déception",
-        "Carte de la confiance",
-        "Carte de la méfiance",
-    ];
+
+    const index = Math.floor(Math.random() * (5 * floor) + 2) || 1;
+
+    const type = types[Math.floor(Math.random() * types.length)];
 
     const card = new Card(
-        funkyNames[Math.floor(Math.random() * funkyNames.length)],
-        Math.floor(Math.random() * 10),
-        types[Math.floor(Math.random() * types.length)],
-        Math.floor(Math.random() * 10)
+        Math.floor(Math.random() * index + index / 2), // cout
+        type, // type
+        Math.floor(Math.random() * index + index / 2) || 1 // force
     );
     return card;
 };
+
+const statByType = {
+    block: {
+        cost: 2,
+        strength: 5,
+    },
+    frappe: {
+        cost: 3,
+        strength: 5,
+    },
+
+    heal: {
+        cost: 4,
+        strength: 5,
+    },
+};
+
+const blockCards = [
+    "Carapace",
+    "Bouclar",
+    "Bouclier",
+    "Bouclier de fer",
+    "Bouclier de diamant",
+    "Bouclier de platine",
+    "Bouclier Hylien",
+];
+
+const frappeCards = [
+    "Mandale",
+    "Coup de boule",
+    "Fine lame",
+    "Grosse massue",
+    "Boulet de canon",
+    "Master sword",
+];
+
+const healCards = [
+    "Soin",
+    "Bandage",
+    "Potion",
+    "Sang de licorne",
+    "Elixir de vie",
+    "Tonneau d'immortalité",
+    "Saint Graal",
+    "Hey Listen !",
+];
