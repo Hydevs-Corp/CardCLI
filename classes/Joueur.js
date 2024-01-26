@@ -85,7 +85,7 @@ class Joueur extends Entity {
 
             console.log(
                 "Carte utilisée :",
-                `\n[${card.manaCost} 💧] ${card.type} : ${card.strength}\n`
+                `\n[${currentCard.manaCost} 💧] ${currentCard.type} : ${currentCard.strength}\n`
             );
             // Mette la carte dans le cimetière
             this.cemetary.push(currentCard);
